@@ -20,6 +20,14 @@ class SinglyLinkedListTest {
     }
 
     @Test
+    public void checkIfUserCanAddIntegers() {
+        SinglyLinkedList<Integer> singlyLinkedList = new SinglyLinkedList<>();
+        singlyLinkedList.add(34);
+        singlyLinkedList.add(21);
+        assertEquals(2, singlyLinkedList.size());
+    }
+
+    @Test
     public void checkIfUserCanGetAString() {
         SinglyLinkedList<String> singlyLinkedList = new SinglyLinkedList<>();
         String someString = "some string";
@@ -54,6 +62,28 @@ class SinglyLinkedListTest {
         singlyLinkedList.add("something else else");
         singlyLinkedList.remove(1);
         assertEquals("something else else", singlyLinkedList.get(1));
+    }
+
+    @Test
+    public void checkInsertingDataToHead() {
+        SinglyLinkedList<String> singlyLinkedList = new SinglyLinkedList<>();
+        singlyLinkedList.add("something");
+        singlyLinkedList.add("something else");
+        singlyLinkedList.add("something else else");
+        singlyLinkedList.insert("blahblah", 0);
+        assertEquals("blahblah", singlyLinkedList.get(0));
+        assertEquals(4, singlyLinkedList.size());
+    }
+
+    @Test
+    public void checkInsertingDataToTail() {
+        SinglyLinkedList<String> singlyLinkedList = new SinglyLinkedList<>();
+        singlyLinkedList.add("something");
+        singlyLinkedList.add("something else");
+        singlyLinkedList.add("something else else");
+        singlyLinkedList.insert("blahblah", 2);
+        assertEquals("blahblah", singlyLinkedList.get(2));
+        assertEquals(4, singlyLinkedList.size());
     }
 
 

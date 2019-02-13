@@ -62,7 +62,22 @@ public class SinglyLinkedList<T> {
     }
 
     public void insert(T data, int index) {
-
+        if (index == 0) {
+            Node nodeToInsert = new Node(data);
+            nodeToInsert.setNext(this.head.getNext());
+            this.head = nodeToInsert;
+        } else if (index >= this.length) {
+            this.add(data);
+        } else {
+            Node nodeToInsert = new Node(data);
+            Node current = head;
+            for (int currentIndex = 0; currentIndex < index - 1; currentIndex++) {
+                current = current.getNext();
+            }
+            nodeToInsert.setNext(current.getNext());
+            current.setNext(nodeToInsert);
+        }
+        length++;
     }
 
     public int size() {
