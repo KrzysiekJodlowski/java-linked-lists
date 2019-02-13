@@ -37,5 +37,24 @@ class SinglyLinkedListTest {
         assertEquals(someString, singlyLinkedList.get(2));
     }
 
+    @Test
+    public void checkRemovingItemFromListHead() {
+        SinglyLinkedList<String> singlyLinkedList = new SinglyLinkedList<>();
+        singlyLinkedList.add("something");
+        singlyLinkedList.add("something else");
+        singlyLinkedList.remove(0);
+        assertEquals("something else", singlyLinkedList.get(0));
+    }
+
+    @Test
+    public void checkRemovingItemFromListTail() {
+        SinglyLinkedList<String> singlyLinkedList = new SinglyLinkedList<>();
+        singlyLinkedList.add("something");
+        singlyLinkedList.add("something else");
+        singlyLinkedList.add("something else else");
+        singlyLinkedList.remove(1);
+        assertEquals("something else else", singlyLinkedList.get(1));
+    }
+
 
 }

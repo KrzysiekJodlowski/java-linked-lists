@@ -41,7 +41,24 @@ public class SinglyLinkedList<T> {
     }
 
     public void remove(int index) {
-
+        if (index == 0) {
+            if (this.length == 1) {
+                this.head = null;
+            } else {
+                this.head = head.getNext();
+            }
+        } else {
+            Node current = head;
+            for(int currentIndex = 0; currentIndex < index - 1; currentIndex++) {
+                current = current.getNext();
+            }
+            Node nodeToRemove = current.getNext();
+            if (current.getNext().getNext() != null) {
+                current.setNext(current.getNext().getNext());
+            }
+            nodeToRemove = null;
+        }
+        this.length--;
     }
 
     public void insert(T data, int index) {
