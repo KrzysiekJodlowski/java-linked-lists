@@ -16,51 +16,98 @@ public class DoublyLinkedList<T> {
 
     public void add(T data) {
 
+        if (head == null) {
+            this.head = new DoublyNode(data);
+        } else {
+            DoublyNode current = this.head;
+            while (current.getNext() != null) {
+                current = current.getNext();
+            }
+            DoublyNode newNode = new DoublyNode(data);
+            newNode.setPrevious(current);
+            current.setNext(new DoublyNode(data));
+        }
+        this.length++;
     }
 
     public T get(int index) {
-        return (T) this.head.getData();
+
+        this.checkIndex(index, true);
+        T dataToReturn = (T) this.head.getData();
+
+        if (this.length > this.ONE_INDEX) {
+            DoublyNode current = this.head;
+            for(int currentIndex = this.ZERO; currentIndex < index; currentIndex++) {
+                current = current.getNext();
+            }
+            dataToReturn = (T) current.getData();
+        }
+        return dataToReturn;
     }
 
     public void remove(int index) {
+        this.checkIndex(index, true);
+
+        if (index == this.ZERO) {
+            if (this.length == this.ONE_INDEX) {
+                this.head = null;
+            } else {
+                this.head = head.getNext();
+                this.head.setPrevious(null);
+            }
+        } else {
+            DoublyNode current = head;
+            for(int currentIndex = this.ZERO; currentIndex < index - this.ONE_INDEX; currentIndex++) {
+                current = current.getNext();
+            }
+
+            DoublyNode nodeToRemove = current.getNext();
+            if (current.getNext().getNext() != null) {
+                DoublyNode newNextNode = current.getNext().getNext();
+                newNextNode.setPrevious(current);
+                current.setNext(newNextNode);
+            }
+            nodeToRemove = null;
+        }
+        this.length--;
 
     }
 
     public void insert(T data, int index) {
+        this.checkIndex(index, false);
 
+        if (index == this.ZERO) {
+            DoublyNode nodeToInsert = new DoublyNode(data);
+            nodeToInsert.setNext(this.head.getNext());
+            this.head = nodeToInsert;
+            this.length++;
+        } else if (index >= this.length) {
+            this.add(data);
+        } else {
+            DoublyNode nodeToInsert = new DoublyNode(data);
+            DoublyNode current = head;
+            for (int currentIndex = this.ZERO; currentIndex < index - this.ONE_INDEX; currentIndex++) {
+                current = current.getNext();
+            }
+            nodeToInsert.setPrevious(current);
+            nodeToInsert.setNext(current.getNext());
+            current.setNext(nodeToInsert);
+            this.length++;
+        }
     }
 
     public int size() {
         return this.length;
     }
-}
 
-class DoublyNode<T> {
-    private T data;
-    private Node previousNode;
-    private Node nextNode;
-
-    public DoublyNode(T data) {
-        this.data = data;
-    }
-
-    public Node<T> getPrevious() {
-        return this.previousNode;
-    }
-
-    public void setPrevious(Node<T> pointer) {
-        this.previousNode = pointer;
-    }
-
-    public Node<T> getNext() {
-        return this.nextNode;
-    }
-
-    public void setNext(Node<T> pointer) {
-        this.nextNode = pointer;
-    }
-
-    public T getData() {
-        return this.data;
+    private void checkIndex(int index, boolean checkIfEndIsExceeded) {
+        if (index < this.ZERO) {
+            throw new ArrayIndexOutOfBoundsException("Index is negative!");
+        }
+        if (checkIfEndIsExceeded) {
+            if (index > this.length - this.ONE_INDEX) {
+                throw new ArrayIndexOutOfBoundsException("Index to high!");
+            }
+        }
     }
 }
