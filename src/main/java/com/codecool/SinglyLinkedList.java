@@ -2,8 +2,12 @@ package com.codecool;
 
 
 public class SinglyLinkedList<T> {
+
     private Node head;
     private int length;
+    private final int ZERO = 0;
+    private final int ONE_INDEX = 1;
+
 
     public SinglyLinkedList() {
         this.head = null;
@@ -11,51 +15,49 @@ public class SinglyLinkedList<T> {
     }
 
     public void add(T data) {
+
         if (head == null) {
             this.head = new Node(data);
-            this.length++;
-            return;
+        } else {
+            Node current = this.head;
+            while (current.getNext() != null) {
+                current = current.getNext();
+            }
+            current.setNext(new Node(data));
         }
-        Node current = head;
-        while (current.getNext() != null) {
-            current = current.getNext();
-        }
-        current.setNext(new Node(data));
         this.length++;
     }
 
     public T get(int index) {
-        this.checkIndex(index);
 
+        this.checkIndex(index, true);
         T dataToReturn = (T) this.head.getData();
 
-        if (this.length > 1) {
-            Node current = head;
-            for(int currentIndex = 0; currentIndex < this.length; currentIndex++) {
-                if (currentIndex == index) {
-                    dataToReturn = (T) current.getData();
-                    break;
-                }
+        if (this.length > this.ONE_INDEX) {
+            Node current = this.head;
+            for(int currentIndex = this.ZERO; currentIndex < index; currentIndex++) {
                 current = current.getNext();
             }
+            dataToReturn = (T) current.getData();
         }
         return dataToReturn;
     }
 
     public void remove(int index) {
-        this.checkIndex(index);
+        this.checkIndex(index, true);
 
-        if (index == 0) {
-            if (this.length == 1) {
+        if (index == this.ZERO) {
+            if (this.length == this.ONE_INDEX) {
                 this.head = null;
             } else {
                 this.head = head.getNext();
             }
         } else {
             Node current = head;
-            for(int currentIndex = 0; currentIndex < index - 1; currentIndex++) {
+            for(int currentIndex = this.ZERO; currentIndex < index - this.ONE_INDEX; currentIndex++) {
                 current = current.getNext();
             }
+
             Node nodeToRemove = current.getNext();
             if (current.getNext().getNext() != null) {
                 current.setNext(current.getNext().getNext());
@@ -66,10 +68,9 @@ public class SinglyLinkedList<T> {
     }
 
     public void insert(T data, int index) {
-        if (index < 0) {
-            throw new ArrayIndexOutOfBoundsException("Index is negative!");
-        }
-        if (index == 0) {
+        this.checkIndex(index, false);
+
+        if (index == this.ZERO) {
             Node nodeToInsert = new Node(data);
             nodeToInsert.setNext(this.head.getNext());
             this.head = nodeToInsert;
@@ -79,7 +80,7 @@ public class SinglyLinkedList<T> {
         } else {
             Node nodeToInsert = new Node(data);
             Node current = head;
-            for (int currentIndex = 0; currentIndex < index - 1; currentIndex++) {
+            for (int currentIndex = this.ZERO; currentIndex < index - this.ONE_INDEX; currentIndex++) {
                 current = current.getNext();
             }
             nodeToInsert.setNext(current.getNext());
@@ -92,11 +93,14 @@ public class SinglyLinkedList<T> {
         return this.length;
     }
 
-    private void checkIndex(int index) {
-        if (index < 0) {
+    private void checkIndex(int index, boolean checkIfEndIsExceeded) {
+        if (index < this.ZERO) {
             throw new ArrayIndexOutOfBoundsException("Index is negative!");
-        } else if (index > length - 1) {
-            throw new ArrayIndexOutOfBoundsException("Index to high!");
+        }
+        if (checkIfEndIsExceeded) {
+            if (index > length - this.ONE_INDEX) {
+                throw new ArrayIndexOutOfBoundsException("Index to high!");
+            }
         }
     }
 }
